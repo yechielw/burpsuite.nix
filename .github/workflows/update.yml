@@ -27,7 +27,6 @@ jobs:
       - name: Run script
         run: |
           bash ./update.sh
-          bash -c 'echo $(date) > $(date +%s)'
 
       - name: Commit & push if changed
         run: |
