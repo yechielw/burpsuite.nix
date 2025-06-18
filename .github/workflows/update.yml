@@ -1,0 +1,39 @@
+name: Hourly script runner
+
+# grant the token write access so it can push
+permissions:
+  contents: write
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run script
+        run: |
+          bash ./update.sh
+          bash -c 'echo $(date) > $(date +%s)'
+
+      - name: Commit & push if changed
+        run: |
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "Automated changes"
+            git push origin master
+          fi
+
