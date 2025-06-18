@@ -130,18 +130,3 @@ let
 
 in
 burpPackages
-
-# in
-# {
-#   pro = mkBurp {
-#     productName = "pro";
-#     productDesktop = "Burp Suite Professional Edition";
-#     hash = "sha256-EIz+nMiLkrhO53MWNFgCbIT+xU3PwGH2619OtuvvYh4=";
-#   };
-#
-#   community = mkBurp {
-#     productName = "community";
-#     productDesktop = "Burp Suite Community Edition";
-#     hash = "sha256-Lq8ZOKOCgu7HpSO+RkAEivdWZlDcVhT7Zb1E035bk3o=";
-#   };
-# }
