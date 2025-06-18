@@ -24,7 +24,7 @@
           bupruitecommunity = burp.community;
         };
 
-        nixosModules.burpsuite =
+        ${system}.nixosModules.burpsuite =
           { ... }:
           {
             # install pro into systemPackages
