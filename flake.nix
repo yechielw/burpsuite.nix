@@ -21,7 +21,7 @@
         packages = {
           default = burp.pro;
           burpsuitepro = burp.pro;
-          bupruite = burp.free;
+          bupruitecommunity = burp.comunity;
         };
 
         nixosModules.burpsuite =
