@@ -32,7 +32,8 @@ jobs:
         run: |
           git add -A
           if ! git diff --cached --quiet; then
-            git commit -m "Automated changes"
+            DIFF=$(git diff --no-ext-diff -U0 | tail -1 | cut -d \" -f4)
+            git commit -m "Automated update to version $DIFF"
             git push origin master
           fi
 
