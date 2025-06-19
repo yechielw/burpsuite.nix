@@ -2,6 +2,10 @@ name: "cachix"
 on:
   pull_request:
   push:
+  workflow_run:
+    workflows: ["Hourly script runner"]
+    types:
+      - completed
 jobs:
   tests:
     runs-on: ubuntu-latest
