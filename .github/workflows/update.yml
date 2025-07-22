@@ -34,6 +34,8 @@ jobs:
           if ! git diff --cached --quiet; then
             DIFF=$(git diff --cached --no-ext-diff -U0 | tail -1 | cut -d \" -f4)
             git commit -m "Automated update to version $DIFF"
-            git push origin master
+              git tag "$DIFF"
+              git push origin master
+              git push origin "$DIFF"
           fi
 
