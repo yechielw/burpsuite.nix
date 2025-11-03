@@ -19,19 +19,19 @@ nix run github:yechielw/burpsuite.nix#comunitty
 
 Add this repo as an input to your own flake:
 
+flake.nix
 ```nix
-inputs = {
-  burpsuite = {
-    url = "github:yechielw/burpsuite.nix";
-  };
+{
+  inputs.burpsuite.url = "github:yechielw/burpsuite.nix";
 };
-outputs = {...}:
-  {...
-    modules = [
+```
+configuration.nix
+```nix
+{
+  modules = [
     ...
     inputs.burpsuite.nixosModules.default
   ];
-  ...
 };
 ```
 
