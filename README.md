@@ -9,7 +9,7 @@ This repository provides a Nix flake for Burp Suite Pro that automatically updat
 ```sh
 nix run github:yechielw/burpsuite.nix
 # for community version
-nix run github:yechielw/burpsuite.nix#comunitty
+nix run github:yechielw/burpsuite.nix#BurpSuiteCommunity
 
 
 ```
@@ -28,9 +28,11 @@ flake.nix
 configuration.nix
 ```nix
 {
-  modules = [
+  environment.systemPackages = [
     ...
-    inputs.burpsuite.nixosModules.default
+    inputs.burpsuite.nixosModules.${pkgs.system}.BurpSuitePro
+    # or
+    inputs.burpsuite.nixosModules.${pkgs.system}.BurpSuiteCommunity
   ];
 };
 ```
