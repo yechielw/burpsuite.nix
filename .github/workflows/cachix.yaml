@@ -2,12 +2,12 @@ name: "cachix"
 on:
   pull_request:
   push:
-  workflow_run:
-    workflows: ["Hourly script runner"]
-    types:
-      - completed
+  # workflow_run:
+  #   workflows: ["Hourly script runner"]
+  #   types:
+  #     - completed
 jobs:
-  tests:
+  push-to-chachix:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -17,8 +17,7 @@ jobs:
     - uses: cachix/cachix-action@v14
       with:
         name: burpsuite
-        # If you chose API tokens for write access OR if you have a private cache
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      #- run: bash update.sh
-    - run: nix --extra-experimental-features 'nix-command flakes' build
-    - run: nix --extra-experimental-features 'nix-command flakes' build .\#burpsuitecommunity
+    - name: Build flake
+      run: nix --extra-experimental-features 'nix-command flakes' build
+      run: nix --extra-experimental-features 'nix-command flakes' build .\#burpsuite-community
