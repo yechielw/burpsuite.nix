@@ -47,7 +47,7 @@ let
       pname = "burpsuite";
       inherit version;
 
-      runScript = "${jdk}/bin/java -jar ${src}";
+      runScript = "${jdk}/bin/java -jar ${src} --suppress-jre-check --i-accept-the-license-agreement --disable-check-for-updates-dialog --disable-auto-update";
 
       targetPkgs =
         pkgs: with pkgs; [
@@ -111,9 +111,9 @@ let
   latestJson = builtins.fromJSON (builtins.readFile ./latest.json);
 
   convertEntry = entry: {
-    productName = entry.ProductId;
+    productName = entry.BuildCategoryId;
     version = entry.Version;
-    productDesktop = entry.ProductEdition;
+    productDesktop = entry.BuildCategoryEdition;
     hash = builtins.convertHash {
       hash = entry.Sha256Checksum;
       toHashFormat = "sri";
@@ -123,7 +123,7 @@ let
 
   burpPackages = builtins.listToAttrs (
     map (entry: {
-      name = entry.ProductId;
+      name = entry.BuildCategoryId;
       value = mkBurp (convertEntry entry);
     }) latestJson
   );
