@@ -6,7 +6,8 @@
     "BuildCategoryPlatform": "Jar",
     "BuildCategoryPlatformLabel": "JAR",
     "Sha256Checksum": "92be056ba36368288deae970afe1d1e8a37f0e9616165cf09f23b8137e31e326",
-    "Version": "2026.3"
+    "Version": "2026.3",
+    "EulaUrl": "/burp/tc-community"
   },
   {
     "Md5Checksum": "6666465b2f44ea7c84d430893335242d",
@@ -15,6 +16,7 @@
     "BuildCategoryPlatform": "Jar",
     "BuildCategoryPlatformLabel": "JAR",
     "Sha256Checksum": "886497c85e89877792ba8933bbc0cd2bac08530edad29c7f1e0e50c3380c418e",
-    "Version": "2026.3"
+    "Version": "2026.3",
+    "EulaUrl": "/burp/eula/pro"
   }
 ]
