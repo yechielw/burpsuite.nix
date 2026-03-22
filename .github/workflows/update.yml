@@ -14,9 +14,10 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          fetch-tags: true
           persist-credentials: false
 
       - name: Configure git
@@ -34,14 +35,17 @@ jobs:
         run: |
           git add -A
           if ! git diff --cached --quiet; then
-            DIFF=$(git diff --cached --no-ext-diff -U0 | tail -1 | cut -d \" -f4)
-            git commit -m "Automated update to version $DIFF"
-              git tag "$DIFF"
-              # git push origin master
-              # git push origin "$DIFF"
+            VERSION=$(jq -r '.[0].Version' latest.json)
+            git commit -m "Automated update to version $VERSION"
+
+            if git rev-parse -q --verify "refs/tags/$VERSION" >/dev/null; then
+              echo "Tag $VERSION already exists; skipping tag creation."
+            else
+              git tag "$VERSION"
+            fi
           fi
       - name: Push changes
-        uses: ad-m/github-push-action@master
+        uses: ad-m/github-push-action@v0.8.0
         with:
           github_token: ${{ secrets.PUSHPAT }}
           tags: true
