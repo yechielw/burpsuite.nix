@@ -1,22 +1,22 @@
 [
   {
-    "Md5Checksum": "c1619afbc3040934470f47ddc5d01be1",
+    "Md5Checksum": "8068421f414f0dac3b90488f2f39f551",
     "BuildCategoryEdition": "Burp Suite Community Edition",
     "BuildCategoryId": "community",
     "BuildCategoryPlatform": "Jar",
     "BuildCategoryPlatformLabel": "JAR",
-    "Sha256Checksum": "92be056ba36368288deae970afe1d1e8a37f0e9616165cf09f23b8137e31e326",
-    "Version": "2026.3",
+    "Sha256Checksum": "c235f315713e7081f0f2d5ee8adb0de1e987e6f6ab393590c62a21c0518a66f7",
+    "Version": "2026.3.1",
     "EulaUrl": "/burp/tc-community"
   },
   {
-    "Md5Checksum": "6666465b2f44ea7c84d430893335242d",
+    "Md5Checksum": "96ad7fe7b205ccd595f2d9853cac4500",
     "BuildCategoryEdition": "Burp Suite Professional",
     "BuildCategoryId": "pro",
     "BuildCategoryPlatform": "Jar",
     "BuildCategoryPlatformLabel": "JAR",
-    "Sha256Checksum": "886497c85e89877792ba8933bbc0cd2bac08530edad29c7f1e0e50c3380c418e",
-    "Version": "2026.3",
+    "Sha256Checksum": "8d1551bea151b113bebdb128577e5b5f8be2f5711897bdfb2f4ba6b7ad400ad9",
+    "Version": "2026.3.1",
     "EulaUrl": "/burp/eula/pro"
   }
 ]
