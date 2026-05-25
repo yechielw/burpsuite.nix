@@ -13,6 +13,7 @@ let
   mkBurp =
     {
       productName,
+      downloadProductName ? productName,
       productDesktop,
       hash,
       version,
@@ -22,9 +23,9 @@ let
       src = fetchurl {
         name = "burpsuite.jar";
         urls = [
-          "https://portswigger-cdn.net/burp/releases/download?product=${productName}&version=${version}&type=Jar"
-          "https://portswigger.net/burp/releases/download?product=${productName}&version=${version}&type=Jar"
-          "https://web.archive.org/web/https://portswigger.net/burp/releases/download?product=${productName}&version=${version}&type=Jar"
+          "https://portswigger-cdn.net/burp/releases/download?product=${downloadProductName}&version=${version}&type=Jar"
+          "https://portswigger.net/burp/releases/download?product=${downloadProductName}&version=${version}&type=Jar"
+          "https://web.archive.org/web/https://portswigger.net/burp/releases/download?product=${downloadProductName}&version=${version}&type=Jar"
         ];
         sha256 = hash;
       };
@@ -69,13 +70,13 @@ let
           nspr
           nss
           pango
-          xorg.libX11
-          xorg.libxcb
-          xorg.libXcomposite
-          xorg.libXdamage
-          xorg.libXext
-          xorg.libXfixes
-          xorg.libXrandr
+          libX11
+          libxcb
+          libXcomposite
+          libXdamage
+          libXext
+          libXfixes
+          libXrandr
         ];
 
       extraInstallCommands = ''
@@ -112,6 +113,7 @@ let
 
   convertEntry = entry: {
     productName = entry.BuildCategoryId;
+    downloadProductName = entry.DownloadBuildCategoryId or entry.BuildCategoryId;
     version = entry.Version;
     productDesktop = entry.BuildCategoryEdition;
     hash = builtins.convertHash {
