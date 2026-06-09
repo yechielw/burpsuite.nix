@@ -7,6 +7,7 @@ permissions:
 on:
   schedule:
     - cron: '0 * * * *'
+  workflow_dispatch:
 
 jobs:
   run-script:
@@ -35,7 +36,7 @@ jobs:
         run: |
           git add -A
           if ! git diff --cached --quiet; then
-            VERSION=$(jq -r '.[0].Version' latest.json)
+            VERSION=$(jq -r '.Version' latest.json)
             git commit -m "Automated update to version $VERSION"
 
             if git rev-parse -q --verify "refs/tags/$VERSION" >/dev/null; then

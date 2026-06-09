@@ -1,5 +1,5 @@
 {
-  description = "Auto updating flake for burpsuite pro";
+  description = "Auto updating flake for Burp Suite";
 
   nixConfig = {
     substituters = [ "https://burpsuite.cachix.org/" ];
@@ -21,15 +21,17 @@
       eachSystem = flake-utils.lib.eachDefaultSystem (
         system:
         let
-          # pkgs = nixpkgs.legacyPackages.${system};
-          package = nixpkgs.legacyPackages.${system}.callPackage ./package.nix { };
+          pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
+          burpsuite = pkgs.callPackage ./package.nix { };
         in
         {
           packages = {
-            default = package.pro;
-            burpsuite = package.pro;
-            burpsuite-pro = package.pro;
-            burpsuite-community = package.community;
+            default = burpsuite;
+            inherit burpsuite;
+            burpsuite-desktop = burpsuite;
           };
         }
       );

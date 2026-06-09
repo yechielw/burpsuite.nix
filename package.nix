@@ -8,127 +8,108 @@
 }:
 
 let
-  #version = "2025.1.2";
-
-  mkBurp =
-    {
-      productName,
-      downloadProductName ? productName,
-      productDesktop,
-      hash,
-      version,
-    }:
-
-    let
-      src = fetchurl {
-        name = "burpsuite.jar";
-        urls = [
-          "https://portswigger-cdn.net/burp/releases/download?product=${downloadProductName}&version=${version}&type=Jar"
-          "https://portswigger.net/burp/releases/download?product=${downloadProductName}&version=${version}&type=Jar"
-          "https://web.archive.org/web/https://portswigger.net/burp/releases/download?product=${downloadProductName}&version=${version}&type=Jar"
-        ];
-        sha256 = hash;
-      };
-
-      desktopItem = makeDesktopItem {
-        name = "burpsuite";
-        exec = "burpsuite";
-        icon = "burpsuite";
-        desktopName = productDesktop;
-        comment = "An integrated platform for performing security testing of web applications";
-        categories = [
-          "Development"
-          "Security"
-          "System"
-        ];
-      };
-
-    in
-    buildFHSEnv {
-      pname = "burpsuite";
-      inherit version;
-
-      runScript = "${jdk}/bin/java -jar ${src} --suppress-jre-check --i-accept-the-license-agreement --disable-check-for-updates-dialog --disable-auto-update";
-
-      targetPkgs =
-        pkgs: with pkgs; [
-          alsa-lib
-          at-spi2-core
-          cairo
-          cups
-          dbus
-          expat
-          glib
-          gtk3
-          gtk3-x11
-          jython
-          libcanberra-gtk3
-          libdrm
-          udev
-          libxkbcommon
-          libgbm
-          nspr
-          nss
-          pango
-          libX11
-          libxcb
-          libXcomposite
-          libXdamage
-          libXext
-          libXfixes
-          libXrandr
-        ];
-
-      extraInstallCommands = ''
-        mkdir -p "$out/share/pixmaps"
-        ${lib.getBin unzip}/bin/unzip -p ${src} resources/Media/icon64${productName}.png > "$out/share/pixmaps/burpsuite.png"
-        cp -r ${desktopItem}/share/applications $out/share
-      '';
-
-      meta = with lib; {
-        description = "An integrated platform for performing security testing of web applications";
-        longDescription = ''
-          Burp Suite is an integrated platform for performing security testing of web applications.
-          Its various tools work seamlessly together to support the entire testing process, from
-          initial mapping and analysis of an application's attack surface, through to finding and
-          exploiting security vulnerabilities.
-        '';
-        homepage = "https://portswigger.net/burp/";
-        changelog =
-          "https://portswigger.net/burp/releases/professional-community-"
-          + replaceStrings [ "." ] [ "-" ] version;
-        sourceProvenance = with sourceTypes; [ binaryBytecode ];
-        #license = licenses.unfree;
-        platforms = jdk.meta.platforms;
-        hydraPlatforms = [ ];
-        maintainers = with maintainers; [
-          bennofs
-          fab
-        ];
-        mainProgram = "burpsuite";
-      };
-    };
-
+  pname = "burpsuite";
+  description = "Integrated platform for performing security testing of web applications";
   latestJson = builtins.fromJSON (builtins.readFile ./latest.json);
-
-  convertEntry = entry: {
-    productName = entry.BuildCategoryId;
-    downloadProductName = entry.DownloadBuildCategoryId or entry.BuildCategoryId;
-    version = entry.Version;
-    productDesktop = entry.BuildCategoryEdition;
-    hash = builtins.convertHash {
-      hash = entry.Sha256Checksum;
-      toHashFormat = "sri";
-      hashAlgo = "sha256";
-    };
+  version = latestJson.Version;
+  releaseUrl = latestJson.ReleaseUrl or (
+    "/burp/releases/professional-community-" + lib.replaceStrings [ "." ] [ "-" ] version
+  );
+  changelog =
+    if lib.hasPrefix "https://" releaseUrl then
+      releaseUrl
+    else if lib.hasPrefix "/" releaseUrl then
+      "https://portswigger.net${releaseUrl}"
+    else
+      "https://portswigger.net/burp/releases/${releaseUrl}";
+  hash = builtins.convertHash {
+    hash = latestJson.Sha256Checksum;
+    toHashFormat = "sri";
+    hashAlgo = "sha256";
   };
 
-  burpPackages = builtins.listToAttrs (
-    map (entry: {
-      name = entry.BuildCategoryId;
-      value = mkBurp (convertEntry entry);
-    }) latestJson
-  );
+  src = fetchurl {
+    name = "burpsuite.jar";
+    urls = [
+      "https://portswigger-cdn.net/burp/releases/download?product=desktop&version=${version}&type=Jar"
+      "https://portswigger.net/burp/releases/download?product=desktop&version=${version}&type=Jar"
+      "https://web.archive.org/web/https://portswigger.net/burp/releases/download?product=desktop&version=${version}&type=Jar"
+    ];
+    sha256 = hash;
+  };
+
+  desktopItem = makeDesktopItem {
+    name = pname;
+    exec = pname;
+    icon = pname;
+    desktopName = "Burp Suite Desktop";
+    comment = description;
+    categories = [
+      "Development"
+      "Security"
+      "System"
+    ];
+  };
 
 in
-burpPackages
+buildFHSEnv {
+  inherit pname version;
+
+  runScript = "${lib.getExe jdk} -jar ${src} --suppress-jre-check --i-accept-the-license-agreement --disable-check-for-updates-dialog --disable-auto-update";
+
+  targetPkgs =
+    pkgs: with pkgs; [
+      alsa-lib
+      at-spi2-core
+      cairo
+      cups
+      dbus
+      expat
+      glib
+      gtk3
+      gtk3-x11
+      jython
+      libcanberra-gtk3
+      libdrm
+      udev
+      libxkbcommon
+      libgbm
+      nspr
+      nss
+      pango
+      libX11
+      libxcb
+      libXcomposite
+      libXdamage
+      libXext
+      libXfixes
+      libXrandr
+    ];
+
+  extraInstallCommands = ''
+    mkdir -p "$out/share/icons/hicolor/64x64/apps"
+    ${lib.getBin unzip}/bin/unzip -p ${src} resources/Media/icon64pro.png > "$out/share/icons/hicolor/64x64/apps/${pname}.png"
+    cp -r ${desktopItem}/share/applications $out/share
+  '';
+
+  meta = with lib; {
+    inherit description;
+    longDescription = ''
+      Burp Suite is an integrated platform for performing security testing of web applications.
+      Its various tools work seamlessly together to support the entire testing process, from
+      initial mapping and analysis of an application's attack surface, through to finding and
+      exploiting security vulnerabilities.
+    '';
+    homepage = "https://portswigger.net/burp/";
+    inherit changelog;
+    sourceProvenance = with sourceTypes; [ binaryBytecode ];
+    license = licenses.unfree;
+    platforms = jdk.meta.platforms;
+    hydraPlatforms = [ ];
+    maintainers = with maintainers; [
+      bennofs
+      fab
+    ];
+    mainProgram = "burpsuite";
+  };
+}

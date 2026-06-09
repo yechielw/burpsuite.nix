@@ -1,17 +1,13 @@
 # burpsuite.nix
 
-Auto-updating [Nix](https://nixos.org/) flake for [Burp Suite Pro](https://portswigger.net/burp).
+Auto-updating [Nix](https://nixos.org/) flake for [Burp Suite](https://portswigger.net/burp).
 
-This repository provides a Nix flake for Burp Suite Pro that automatically updates to the latest available version.
+This repository provides a Nix flake for Burp Suite Desktop that automatically updates to the latest available version.
 
-### Run Burp Suite Pro using Nix
+### Run Burp Suite using Nix
 
 ```sh
 nix run github:yechielw/burpsuite.nix
-# for community version
-nix run github:yechielw/burpsuite.nix#BurpSuiteCommunity
-
-
 ```
 
 
@@ -29,10 +25,7 @@ configuration.nix
 ```nix
 {
   environment.systemPackages = [
-    ...
-    inputs.burpsuite.nixosModules.${pkgs.system}.BurpSuitePro
-    # or
-    inputs.burpsuite.nixosModules.${pkgs.system}.BurpSuiteCommunity
+    inputs.burpsuite.packages.${pkgs.system}.burpsuite
   ];
 };
 ```
