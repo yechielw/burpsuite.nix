@@ -44,6 +44,7 @@ let
     icon = pname;
     desktopName = "Burp Suite Desktop";
     comment = description;
+    startupWMClass = "burp-StartBurp";
     categories = [
       "Development"
       "Security"
@@ -87,9 +88,16 @@ buildFHSEnv {
     ];
 
   extraInstallCommands = ''
-    mkdir -p "$out/share/icons/hicolor/64x64/apps"
-    ${lib.getBin unzip}/bin/unzip -p ${src} resources/Media/icon64pro.png > "$out/share/icons/hicolor/64x64/apps/${pname}.png"
-    cp -r ${desktopItem}/share/applications $out/share
+    for size in 16 20 28 32 64; do
+      mkdir -p "$out/share/icons/hicolor/''${size}x''${size}/apps"
+      ${lib.getBin unzip}/bin/unzip -p ${src} "resources/Media/icon''${size}pro.png" > "$out/share/icons/hicolor/''${size}x''${size}/apps/${pname}.png"
+    done
+    mkdir -p "$out/share/applications"
+    cp "${desktopItem}/share/applications/${pname}.desktop" "$out/share/applications/${pname}.desktop"
+    {
+      cat "${desktopItem}/share/applications/${pname}.desktop"
+      echo "NoDisplay=true"
+    } > "$out/share/applications/burp-StartBurp.desktop"
   '';
 
   meta = with lib; {
