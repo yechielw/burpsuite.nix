@@ -1,12 +1,12 @@
 {
-  "Md5Checksum": "7e40f4efc150d7991106d7c7c0b58634",
+  "Md5Checksum": "9aec215db513b12c6c38bd1c9dc7cd75",
   "BuildCategoryEdition": "Burp Suite Desktop",
   "BuildCategoryId": "desktop",
   "BuildCategoryPlatform": "Jar",
   "BuildCategoryPlatformLabel": "JAR",
-  "Sha256Checksum": "3571f8cadbfd65b0b090d2753735c40b76ad7fdde0b927df2b22ec46ea09693a",
-  "Version": "2026.9.2",
+  "Sha256Checksum": "a43a499aef4b464fd2769e503712160dad9f4ebf0caf7145a99b12aa0350213a",
+  "Version": "2026.10",
   "EulaUrl": "/burp/eula",
-  "ReleaseUrl": "/burp/releases/professional-community-2026-9-2",
-  "ReleaseTitle": "Professional / Community 2026.9.2"
+  "ReleaseUrl": "/burp/releases/professional-community-2026-10",
+  "ReleaseTitle": "Professional / Community 2026.10"
 }
